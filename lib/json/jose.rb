@@ -24,6 +24,9 @@ module JSON
       when JSON::JWK
         key.to_key
       when JSON::JWK::Set
+        if key.length == 1
+          return key[0].to_key
+        end  
         key.detect do |jwk|
           jwk[:kid] && jwk[:kid] == kid
         end.try(:to_key) or raise JWK::Set::KidNotFound
